@@ -2,20 +2,21 @@
 //
 
 #include "pch.h"
+#include "limits.h"
 #include <iostream>
+
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	cout << "Data type: Char. Size in bytes              |" << sizeof(char) <<"|Min value|"<< CHAR_MIN <<"       |Max value|"<< CHAR_MAX<<"|\n";
+	cout << "Data type: Signed Char. Size in bytes       |" << sizeof(signed char) << "|Min value|" << SCHAR_MIN << "       |Max value|" << SCHAR_MAX << "|\n";
+	cout << "Data type: Unsigned Char. Size in bytes     |" << sizeof(unsigned char) << "|Min value|" << 0 << "          |Max value|" << UCHAR_MAX << "|\n";
+	cout << "Data type: Short. Size in bytes             |" << sizeof(short) << "|Min value|" << SHRT_MIN << "     |Max value|" << SHRT_MAX << "|\n";
+	cout << "Data type: Unsigned Short Int. Size in bytes|" << sizeof(unsigned short) << "|Min value|" << 0 << "          |Max value|" << USHRT_MAX << "|\n";
+	cout << "Data type: Int. Size in bytes               |" << sizeof(int) << "|Min value|" << INT_MIN << "|Max value|" << INT_MAX << "|\n";
+	cout << "Data type: Unsigned Int. Size in bytes      |" << sizeof(unsigned int) << "|Min value|" << 0 << "          |Max value|" << UINT_MAX << "|\n";
+	cout << "Data type: Long. Size in bytes              |" << sizeof(long) << "|Min value|" << LONG_MIN << "|Max value|" << LONG_MAX << "|\n";
+	cout << "Data type: Unsigned Long. Size in bytes     |" << sizeof(unsigned long) << "|Min value|" << 0 << "          |Max value|" << ULONG_MAX << "|\n";
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
