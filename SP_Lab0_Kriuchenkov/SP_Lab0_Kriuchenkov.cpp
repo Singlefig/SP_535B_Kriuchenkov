@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
+	cout << "Data type: Bool. Size in bytes              |" << sizeof(bool) << "|Min value|" << 0 << "           |Max value|" << 1 << "|\n";
 	cout << "Data type: Char. Size in bytes              |" << sizeof(char) <<"|Min value|"<< CHAR_MIN <<"        |Max value|"<< CHAR_MAX<<"|\n";
 	cout << "Data type: Signed Char. Size in bytes       |" << sizeof(signed char) << "|Min value|" << SCHAR_MIN << "        |Max value|" << SCHAR_MAX << "|\n";
 	cout << "Data type: Unsigned Char. Size in bytes     |" << sizeof(unsigned char) << "|Min value|" << 0 << "           |Max value|" << UCHAR_MAX << "|\n";
