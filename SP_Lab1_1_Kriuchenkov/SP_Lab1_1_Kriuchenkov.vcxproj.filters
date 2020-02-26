@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SP_Lab1_Kriuchenkov.cpp">
+    <ClCompile Include="SP_Lab1_1_Kriuchenkov.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

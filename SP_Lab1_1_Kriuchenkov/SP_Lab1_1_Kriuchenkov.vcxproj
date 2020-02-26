@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{1844D7B5-43FE-4539-A356-49FCF099A1C4}</ProjectGuid>
+    <ProjectGuid>{D64BEF78-53AC-4DBA-B116-58829A26A986}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SPLab1Kriuchenkov</RootNamespace>
+    <RootNamespace>SPLab11Kriuchenkov</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SP_Lab1_Kriuchenkov.cpp" />
+    <ClCompile Include="SP_Lab1_1_Kriuchenkov.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
