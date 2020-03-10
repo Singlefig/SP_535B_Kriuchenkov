@@ -21,13 +21,13 @@ void EncodeToANSIFromUnicode(LPCSTR fileName)
 {
 	HANDLE sourceFile, destinationFile; 
 
-	CHAR buffer[2048];
-	WCHAR encodedCharsToWChar_t[2048];
+	CHAR buffer[1024];
+	WCHAR * encodedCharsToWChar_t;
 
 	DWORD readedChars, writtenChars;  
 	BOOL readFile = true;
 
-	char nameOfDestinationFile[256];
+	char nameOfDestinationFile[FILENAME_MAX];
 	snprintf(nameOfDestinationFile, sizeof(nameOfDestinationFile), "%s%s", "UnicodeEncoded", fileName);
 	printf("Результат находится в \n %s\n", nameOfDestinationFile);
 	sourceFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ,NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -46,7 +46,10 @@ void EncodeToANSIFromUnicode(LPCSTR fileName)
 	}
 	while (((readFile = ReadFile(sourceFile, &buffer, sizeof(buffer), &readedChars, NULL)) != 0) && (readedChars != 0))
 	{
-		MultiByteToWideChar(GetACP(), 0, buffer, readedChars, encodedCharsToWChar_t, 2048);
+		int allocationSize = MultiByteToWideChar(GetACP(), 0, buffer, readedChars, NULL, 0);
+		encodedCharsToWChar_t = (WCHAR *)calloc(allocationSize, sizeof(WCHAR));
+
+		MultiByteToWideChar(GetACP(), 0, buffer, readedChars, encodedCharsToWChar_t, allocationSize);
 
 		if (!WriteFile(destinationFile, encodedCharsToWChar_t, readedChars * 2, &writtenChars, NULL))
 		{
@@ -54,6 +57,7 @@ void EncodeToANSIFromUnicode(LPCSTR fileName)
 			printf("3 error\n");
 			exit(EXIT_FAILURE);
 		}
+		free(encodedCharsToWChar_t);
 	}
 	if (readFile == false && readedChars != 0)
 	{
@@ -70,15 +74,15 @@ void EncodeToUnicodeFromANSI(LPCSTR fileName)
 {
 	HANDLE sourceFile, destinationFile;
 
-	WCHAR buffer[2048];
-	CHAR WCharsEncodedToCHARS[2048];
-	CCHAR symbols(254);
+	CHAR buffer[1024];
+	WCHAR * bytesEncodedIntoWchar;
+	CHAR * WCharsEncodedToCHARS;
 	BOOL isSymbolUnknown = false;
 
 	DWORD readedBytes, writtenBytes;  
 	BOOL readFile = true;
 
-	char nameDestinationFile[256];
+	char nameDestinationFile[FILENAME_MAX];
 	snprintf(nameDestinationFile, sizeof(nameDestinationFile), "%s%s", "ASCIEncoded", fileName);
 	printf("Результат находится в \n %s\n", nameDestinationFile);
 	sourceFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ,NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -98,15 +102,26 @@ void EncodeToUnicodeFromANSI(LPCSTR fileName)
 		PrintError();
 		exit(EXIT_FAILURE);
 	}
-	while (((readFile = ReadFile(sourceFile, &buffer, sizeof(buffer), &readedBytes, NULL)) != 0) && (readedBytes != 0))
+	while (((readFile = ReadFile(sourceFile, &buffer, sizeof(buffer), &readedBytes, NULL)) != false) && (readedBytes != 0))
 	{
-		WideCharToMultiByte(GetACP(), 0, buffer, readedBytes / sizeof(buffer[0]), WCharsEncodedToCHARS,
-			readedBytes / sizeof(buffer[0]), NULL, NULL);
-		if (!WriteFile(destinationFile, WCharsEncodedToCHARS, readedBytes / sizeof(buffer[0]), &writtenBytes, NULL))
+		int symbols = MultiByteToWideChar(GetACP(),0,buffer,readedBytes,NULL,0);
+
+		bytesEncodedIntoWchar = (WCHAR *)calloc(symbols, sizeof(WCHAR));
+
+		MultiByteToWideChar(GetACP(), 0, buffer, readedBytes,bytesEncodedIntoWchar, symbols);
+
+		int allocationSize = WideCharToMultiByte(CP_ACP,0,bytesEncodedIntoWchar,symbols,NULL,0,NULL,NULL);
+
+		WCharsEncodedToCHARS = (CHAR *)calloc(allocationSize, sizeof(CHAR));
+
+		WideCharToMultiByte(CP_ACP,0, bytesEncodedIntoWchar,symbols,WCharsEncodedToCHARS,allocationSize,NULL,NULL);
+		if (!WriteFile(destinationFile, WCharsEncodedToCHARS, allocationSize, &writtenBytes, NULL))
 		{
 			PrintError();
 			exit(EXIT_FAILURE);
 		}
+		free(bytesEncodedIntoWchar);
+		free(WCharsEncodedToCHARS);
 	}
 	if (readFile == false && readedBytes != 0)
 	{
