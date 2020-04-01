@@ -244,7 +244,7 @@ void PrintMenu()
 {
 	cout << "\t\n*** File manager ***\n";
 	cout << "1 - Change directory\n";
-	cout << "2 - Print directory\n";
+	cout << "2 - Print directory \n";
 	cout << "3 - Copy file\n";
 	cout << "4 - Create directory\n";
 	cout << "5 - Delete file or empty directory\n";
