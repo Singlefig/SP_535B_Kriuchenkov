@@ -3,6 +3,12 @@
 #include <vector>
 #include <stdio.h>
 
+#define CREATE '1'
+#define MODIFY '2'
+#define DELETE1 '3'
+#define PRINT '4'
+#define EXIT '5'
+
 CONST WCHAR FILE_PATH[] = L"ContextRecords.rb";
 
 typedef struct
@@ -28,6 +34,9 @@ bool WriteInFile(HANDLE hRecordsFile, RECORD usRec, DWORD offset);
 bool WriteOrGetHeader(HANDLE hRecordsFile, DWORD dwCreateOrGetHeader, P_HEADER pHeader, BOOL clearFile);
 bool DeleteRecord(HANDLE hRecordsFile, DWORD idToDelete, DWORD* countRecords, DWORD* fileSize);
 bool ModifyRecord(HANDLE hRecordsFile, DWORD idToModify);
+void createChoise(HANDLE hfile, DWORD dwSize, DWORD dwCount);
+bool modifyChoise(HANDLE hfile,DWORD dwCount);
+bool deleteChoise(HANDLE hfile, DWORD dwSize, DWORD dwCount);
 
 using namespace std;
 
@@ -49,71 +58,30 @@ int main(int argc, char* argv[])
 		cin >> Choise;
 		switch (Choise)
 		{
-		case '1':
+		case CREATE:
 		{
-			CHAR inBuff[80] = { 0 };
-			cout << "Input text for new record (max length is 80 characters)\n or input '0' to create record with null content\n";
-			cin >> inBuff;
-			if (!CreateAndWriteRecord(hFileRecords, &dwSizeOfFile, inBuff, &dwCountOfRecords))
-			{
-				cout << "Error! Can't create new record!" << endl;
-			}
-			else 
-			{
-				cout << "Created successfully!" << endl;
-			}
+			createChoise(hFileRecords,dwSizeOfFile,dwCountOfRecords);
 		} break;
 
-		case '2':
+		case MODIFY:
 		{
-			DWORD idToMod;
-			cout << "Input record id for modify:";
-			cin >> idToMod;
-			if (idToMod >= dwCountOfRecords)
+			bool result = modifyChoise(hFileRecords,dwCountOfRecords);
+			if (!result)
 			{
-				cout << "Error! Record with this id is not exist!\n";
-				continue;
-			}
-			else
-			{
-				if (!ModifyRecord(hFileRecords, idToMod))
-				{
-					cout << "Error!. Can't modify this record!";
-					continue;
-				}
-				else
-				{
-					cout << "Modified successfully!" << endl;
-				}
-			}
-
-		} break;
-
-		case '3':
-		{
-			DWORD idToDelete;
-			cout << "Input record id for deleting:";
-			cin >> idToDelete;
-			if (idToDelete >= dwCountOfRecords)
-			{
-				cout << "Error! Record with this id is not exist!\n";
-				continue;
-			}
-			else
-			{
-				if (!DeleteRecord(hFileRecords, idToDelete, &dwCountOfRecords, &dwSizeOfFile))
-				{
-					cout << "Error!. Can't delete this record!\n";
-				}
-				else
-				{
-					cout << "Deleted successfully!" << endl;
-				}
 				continue;
 			}
 		} break;
 
-		case '4':
+		case DELETE1:
+		{
+			bool result = deleteChoise(hFileRecords, dwSizeOfFile, dwCountOfRecords);
+			if (!result)
+			{
+				continue;
+			}
+		} break;
+
+		case PRINT:
 		{
 			if (!PrintFileContent(hFileRecords, dwCountOfRecords))
 			{
@@ -122,7 +90,7 @@ int main(int argc, char* argv[])
 			}
 		} break;
 
-		case '5':
+		case EXIT:
 		{
 			CloseHandle(hFileRecords);
 			return 0;
@@ -425,6 +393,71 @@ bool PrintFileContent(HANDLE hRecordsFile, DWORD dwCountRecords)
 		printf("* Time of create: %d:%d:%d, %d:%d\n", sysTime.wDay, sysTime.wMonth, sysTime.wYear, sysTime.wHour, sysTime.wMinute);
 		cout << "* Count of changes:" << recordsBuff.RecordCounterChanges << endl;
 		cout << "* Record Text:" << recordsBuff.RecordText << endl;
+	}
+	return true;
+}
+
+void createChoise(HANDLE hfile, DWORD dwSize, DWORD dwCount)
+{
+	CHAR inBuff[80] = { 0 };
+	cout << "Input text for new record (max length is 80 characters)\n or input '0' to create record with null content\n";
+	cin >> inBuff;
+	if (!CreateAndWriteRecord(hfile, &dwSize, inBuff, &dwCount))
+	{
+		cout << "Error! Can't create new record!" << endl;
+	}
+	else
+	{
+		cout << "Created successfully!" << endl;
+	}
+}
+
+bool modifyChoise(HANDLE hfile,DWORD dwCount)
+{
+	DWORD idToMod;
+	cout << "Input record id for modify:";
+	cin >> idToMod;
+	if (idToMod >= dwCount)
+	{
+		cout << "Error! Record with this id is not exist!\n";
+		return false;
+	}
+	else
+	{
+		if (!ModifyRecord(hfile, idToMod))
+		{
+			cout << "Error!. Can't modify this record!";
+			return false;
+		}
+		else
+		{
+			cout << "Modified successfully!" << endl;
+		}
+	}
+	return true;
+}
+
+bool deleteChoise(HANDLE hfile, DWORD dwSize, DWORD dwCount)
+{
+	DWORD idToDelete;
+	cout << "Input record id for deleting:";
+	cin >> idToDelete;
+	if (idToDelete >= dwCount)
+	{
+		cout << "Error! Record with this id is not exist!\n";
+		return false;
+	}
+	else
+	{
+		if (!DeleteRecord(hfile, idToDelete, &dwCount, &dwSize))
+		{
+			cout << "Error!. Can't delete this record!\n";
+		}
+		else
+		{
+			cout << "Deleted successfully!" << endl;
+		}
+		return false;
 	}
 	return true;
 }

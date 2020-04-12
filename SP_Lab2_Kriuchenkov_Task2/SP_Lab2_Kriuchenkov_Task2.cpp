@@ -7,7 +7,13 @@
 #include <stdio.h>
 
 #define PATH_MAX (MAX_PATH + 1) 
-
+#define CHANGEDIR '1'
+#define PRINTDIR '2'
+#define COPYFILE '3'
+#define CREATEDIR '4'
+#define DELETEEMPTY '5'
+#define PRINTINFO '6'
+#define EXIT '7'
 void PrintMenu();
 bool ChangeDir(TCHAR* sCurrDirectory, BOOL isStdinContainNewlineChar);
 bool PrintDir(TCHAR sCurrDirectory[]);
@@ -37,7 +43,7 @@ int main()
 
 		switch (menuChoise)
 		{
-		case '1':
+		case CHANGEDIR:
 		{
 			if (!ChangeDir(sCurPath, TRUE))
 			{
@@ -48,7 +54,7 @@ int main()
 				wcout << "Changed successfully!";
 			}
 		} break;
-		case '2':
+		case PRINTDIR:
 		{
 			if (!PrintDir(sCurPath))
 			{
@@ -59,7 +65,7 @@ int main()
 				wcout << "Printed successfully!";
 			}
 		} break;
-		case '3':
+		case COPYFILE:
 		{
 			if (!CopyFileOwn(TRUE))
 			{
@@ -70,7 +76,7 @@ int main()
 				wcout << "Copied successfully!";
 			}
 		} break;
-		case '4':
+		case CREATEDIR:
 		{
 			if (!CreateDirOwn(TRUE))
 			{
@@ -81,7 +87,7 @@ int main()
 				wcout << "Created successfully!";
 			}
 		} break;
-		case '5':
+		case DELETEEMPTY:
 		{
 			if (!DeleteEmptyDirOrFile(TRUE))
 			{
@@ -92,7 +98,7 @@ int main()
 				wcout << "Deleted successfully!";
 			}
 		} break;
-		case '6':
+		case PRINTINFO:
 		{
 			if (!PrintInfoAboutFile(TRUE))
 			{
@@ -103,7 +109,7 @@ int main()
 				wcout << "Printed successfully!";
 			}
 		} break;
-		case '7':
+		case EXIT:
 		{
 			return 0;
 		} break;
