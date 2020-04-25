@@ -13,7 +13,12 @@
 #define FINDSTRING 'c'
 #define SAVEFILE 'd'
 #define EXIT 'e'
-
+#define HKEY_CLASSES_ROOT_MENU 1
+#define HKEY_CURRENT_USER_MENU 2
+#define HKEY_LOCAL_MACHINE_MENU 3
+#define HKEY_USERS_MENU 4
+#define HKEY_CURRENT_CONFIG_MENU 5
+#define HKEY_PERFOMANCE_DATA_MENU 6
 using namespace std;
 
 typedef struct {
@@ -447,42 +452,42 @@ bool OpenRegKey(HKEY** hKey, DWORD dwOpenAccess, LPSTR fullPath)
 	if (fullPath != NULL)  memset(fullPath, '\0', sizeof(fullPath));
 	int choise = 0;
 	cout << "Predefined keys:\n";
-	cout << "1 - HKEY_CLASSES_ROOT\n";
-	cout << "2 - HKEY_CURRENT_USER\n";
-	cout << "3 - HKEY_LOCAL_MACHINE\n";
-	cout << "4 - HKEY_USERS\n";
-	cout << "5 - HKEY_CURRENT_CONFIG\n";
-	cout << "6 - HKEY_PERFORMANCE_DATA\n";
+	cout << HKEY_CLASSES_ROOT_MENU << " - HKEY_CLASSES_ROOT\n";
+	cout << HKEY_CURRENT_USER_MENU << " - HKEY_CURRENT_USER\n";
+	cout << HKEY_LOCAL_MACHINE_MENU << " - HKEY_LOCAL_MACHINE\n";
+	cout << HKEY_USERS_MENU << " - HKEY_USERS\n";
+	cout << HKEY_CURRENT_CONFIG_MENU << " - HKEY_CURRENT_CONFIG\n";
+	cout << HKEY_PERFOMANCE_DATA_MENU << " - HKEY_PERFORMANCE_DATA\n";
 	cout << "Choose predefined key:";
 	scanf("%d", &choise);
 	switch (choise)
 	{
-	case 1:
+	case HKEY_CLASSES_ROOT_MENU:
 	{
 		predKey = HKEY_CLASSES_ROOT;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_CLASSES_ROOT\\");
 	} break;
-	case 2:
+	case HKEY_CURRENT_USER_MENU:
 	{
 		predKey = HKEY_CURRENT_USER;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_CURRENT_USER\\");
 	} break;
-	case 3:
+	case HKEY_LOCAL_MACHINE_MENU:
 	{
 		predKey = HKEY_LOCAL_MACHINE;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_LOCAL_MACHINE\\");
 	} break;
-	case 4:
+	case HKEY_USERS_MENU:
 	{
 		predKey = HKEY_USERS;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_USERS\\");
 	} break;
-	case 5:
+	case HKEY_CURRENT_CONFIG_MENU:
 	{
 		predKey = HKEY_CURRENT_CONFIG;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_CURRENT_CONFIG\\");
 	} break;
-	case 6:
+	case HKEY_PERFOMANCE_DATA_MENU:
 	{
 		predKey = HKEY_PERFORMANCE_DATA;
 		if (fullPath != NULL) strcpy(fullPath, "HKEY_PERFORMANCE_DATA\\");
@@ -506,9 +511,9 @@ bool OpenRegKey(HKEY** hKey, DWORD dwOpenAccess, LPSTR fullPath)
 void ShowMenu()
 {
 	cout << "***Menu***\n";
-	cout << "a - Print a list of subkeys by key name\n";
-	cout << "b - Print a list of keys parameters with their value and type\n";
-	cout << "c - Searches the registry for a given string in the key names, key values and their types.\nBase key set user\n";
-	cout << "d - Save key as a file\n";
-	cout << "e - Exit\n";
+	cout << PRINTSUB << " - Print a list of subkeys by key name\n";
+	cout << PRINTPARAM << " - Print a list of keys parameters with their value and type\n";
+	cout << FINDSTRING << " - Searches the registry for a given string in the key names, key values and their types.\nBase key set user\n";
+	cout << SAVEFILE << " - Save key as a file\n";
+	cout << EXIT << " - Exit\n";
 }
