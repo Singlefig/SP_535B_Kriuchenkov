@@ -1,0 +1,1 @@
+C:\Users\38099\RiderProjects\UwpApplication2\UwpApplication2\UwpApplication2.csproj;x64
